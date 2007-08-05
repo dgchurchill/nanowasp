@@ -548,6 +548,7 @@ Microbee::time_t Z80CPU::Execute(Microbee::time_t time, Microbee::time_t micros)
 		    }
 	    } while (true);
 
+        R++;  // Memory refresh reg; emulated behaviour is not totally correct
         cycles -= entries[opcode].cycles;
     }
 
