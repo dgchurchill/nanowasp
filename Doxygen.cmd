@@ -1,0 +1,1 @@
+@start "" "C:\Program Files\doxygen\bin\doxywizard.exe" Doxyfile

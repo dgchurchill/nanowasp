@@ -1,0 +1,4 @@
+libdsk available at:
+http://www.seasip.demon.co.uk/Unix/LibDsk/
+
+libdsk-nanowasp.patch applies cleanly against version 1.1.12

@@ -1,0 +1,51 @@
+/*  Nanowasp - A Microbee emulator
+ *  Copyright (C) 2000-2007 David G. Churchill
+ *
+ *  This file is part of Nanowasp.
+ *
+ *  Nanowasp is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  Nanowasp is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
+#include "winver.h"
+#include "version.h"
+
+1 VERSIONINFO
+FILEVERSION VERSION_MAJOR,VERSION_MINOR,0,0
+PRODUCTVERSION VERSION_MAJOR,VERSION_MINOR,0,0
+FILEOS VOS_NT
+FILETYPE VFT_APP
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904E4"
+        BEGIN
+            VALUE "CompanyName",      "David G. Churchill"
+            VALUE "FileDescription",  "Microbee emulator"
+            VALUE "FileVersion",      VERSION_STR
+            VALUE "InternalName",     "nanowasp"
+            VALUE "LegalCopyright",   COPYRIGHT
+            VALUE "OriginalFilename", "nanowasp.exe"
+            VALUE "ProductName",      "nanowasp"
+            VALUE "ProductVersion",   VERSION_STR
+        END
+    END
+END
+
+
+NanowaspIcon ICON "Images/nanowasp.ico"
+
+
+#define wxUSE_NO_MANIFEST 1
+#include "wx/msw/wx.rc"

@@ -1,0 +1,36 @@
+
+Building Nanowasp (mostly) with Visual C++ 2005 Express
+=======================================================
+
+1. Install VC++ Express and the Platform SDK.  For details see:
+   http://msdn.microsoft.com/vstudio/express/visualc/usingpsdk/
+
+2. Install and build wxWidgets.  Nanowasp 2.0b was compiled with
+   wxWidgets 2.8.4 using Libs/wxWidgets/setup.h.  For details see:
+   http://www.wxwidgets.org/wiki/index.php/MSVC_.NET_Setup_Guide
+
+3. Unpack the libdsk tarball in the Libs directory and apply
+   the patch (e.g. "cd libdsk-1.1.12; patch -p 1 < ../libdsk-nanowasp.patch").
+   Build using the VC project file (libdsk-1.1.12\win32vc6\libdsk.dsw).
+
+4. Generate the Z80 emulation code by executing "make" in 
+   Source/Z80/codegen/.  For this I use the GNU tools from
+   MinGW/MSYS.  Note that the code generation requires the
+   regex package.  Download at:
+   http://www.mingw.org/
+   
+5. Build nanowasp using the VC project file.  Currently the wxWidgets
+   path is hardcoded so you may need to update it to match your
+   installation.
+
+
+Building cpmtools
+=================
+
+1. Unpack the tarball in the Utils directory, extract the extra files in the
+   patch zip (replacing the originals from the tarball where appropriate),
+   apply the patch from the zip (e.g. "cd cpmtools-2.6; 
+   patch < cpmtools-microbee.patch").
+
+2. Build using "nmake /f Makefile.msc" (this requires that libdsk has been
+   built already as described above).

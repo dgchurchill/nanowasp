@@ -1,0 +1,4 @@
+Cpmtools available at:
+http://www.moria.de/~michael/cpmtools/
+
+cpmtools-microbee-patch.zip applies cleanly against version 2.6

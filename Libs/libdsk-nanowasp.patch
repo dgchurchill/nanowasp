@@ -1,0 +1,12 @@
+--- libdsk-1.1.12-orig/lib/drvnwasp.c	Mon Dec 30 08:13:48 2002
++++ libdsk-1.1.12/lib/drvnwasp.c	Wed Jul 11 05:02:35 2007
+@@ -112,7 +112,8 @@
+ 	return DSK_ERR_OK;	
+ }
+ 
+-static const int skew[10] = { 1,4,7,0,3,6,9,2,5,8 };
++static const int skew[10] = { 0,1,2,3,4,5,6,7,8,9 };
++//static const int skew[10] = { 1,4,7,0,3,6,9,2,5,8 };
+ 
+ 
+ dsk_err_t nwasp_read(DSK_DRIVER *self, const DSK_GEOMETRY *geom,

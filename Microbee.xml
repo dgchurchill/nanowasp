@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+
+<microbee>
+	<device id="z80" class="Z80CPU" freq="3375000" />
+	<device id="keyb" class="Keyboard">
+		<connect type="CRTC" dest="crtc" />
+		<connect type="LatchROM" dest="latchrom" />
+	</device>
+	
+	<device id="latchrom" class="LatchROM" port="0x0B" />
+	<device id="crtc" class="CRTC" port="0x0C, 0x0E, 0x1C, 0x1E">
+		<connect type="CRTCMemory" dest="crtcmem" />
+		<connect type="Keyboard" dest="keyb" />
+	</device>
+	<device id="memmapper" class="MemMapper" port="0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57">
+		<connect type="Z80CPU" dest="z80" />
+		<connect type="Bank0" dest="bank0" />
+		<connect type="Bank1" dest="bank1" />
+		<connect type="Bank2" dest="bank2" />
+		<connect type="Bank3" dest="bank3" />
+		<connect type="ROM1" dest="rom1" />
+		<connect type="ROM2" dest="rom2" />
+		<connect type="ROM3" dest="rom3" />
+		<connect type="CRTCMemory" dest="crtcmem" />
+	</device>
+	<device id="drives" class="Drives" port="0x48, 0x49, 0x4A, 0x4B">
+		<connect type="FDC" dest="fdc" />
+		<disk drive="0" filename="Data/boot.dsk" />
+	</device>
+	<device id="fdc" class="FDC" port="0x40, 0x44">
+		<connect type="Drives" dest="drives" />
+	</device>
+
+	<device id="rom1" class="ROM" size="16384" filename="Data/rom1.bin" />
+	<device id="rom2" class="ROM" size="16384" filename="" />
+	<device id="rom3" class="ROM" size="16384" filename="" />
+	<device id="bank0" class="RAM" size="32768" />
+	<device id="bank1" class="RAM" size="32768" /> <!-- filename="zexdoc.bin" /-->
+	<device id="bank2" class="RAM" size="32768" />
+	<device id="bank3" class="RAM" size="32768" />
+	<device id="crtcmem" class="CRTCMemory" charrom="Data/charrom.bin">
+		<connect type="CRTC" dest="crtc" />
+		<connect type="LatchROM" dest="latchrom" />
+	</device>
+</microbee>
