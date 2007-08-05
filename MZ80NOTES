@@ -1,0 +1,15 @@
+notes for successful compilation:
+
+- makez80.c must be modified so it generates
+a section name of text instead of text32.
+search for section in makez80.c and modify
+as appropriate.  if the section is called
+text32, segfaults occur.
+
+
+- bug in makez80.c:
+otir, etc. decrement B at the start.  this is wrong.
+
+
+- comment out the rccore/types.h include in mz80.h
+
