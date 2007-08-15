@@ -16,7 +16,7 @@ CPMFileSys::CPMFileSys(const char *name)
 
     const char *err = Device_open(&superblock.dev, name, O_RDWR, NULL);
     if (err != NULL)
-        throw std::runtime_error(std::string("CPMFileSys: ") + err);
+        throw GeneralError(err);
 
     cpmReadSuper(&superblock, &root, "microbee");
 }
@@ -67,13 +67,13 @@ void CPMFileSys::CopyFromCPM(const char *from, const char *to)
     struct cpmFile file;
 
     if (cpmNamei(&root, from, &ino) == -1)
-        throw std::runtime_error(std::string("CopyFromCPM: Couldn't open ") + from);
+        throw FileNotFound(from);
 
     cpmOpen(&ino, &file, O_RDONLY);
 
     std::ofstream outf(to, std::ios::out | std::ios::binary | std::ios::trunc);
     if (outf.fail())
-        throw std::runtime_error(std::string("CopyFromCPM: Couldn't create ") + to);
+        throw NotWritable(to);
 
 
     int count;
@@ -94,11 +94,11 @@ void CPMFileSys::CopyToCPM(const char *from, const char *to)
 {
     std::ifstream inf(from, std::ios::in | std::ios::binary);
     if (inf.fail())
-        throw std::runtime_error(std::string("CopyToCPM: Couldn't open ") + from);
+        throw FileNotFound(from);
 
     struct cpmInode ino;
     if (cpmCreat(&root, to, &ino, 0666) == -1)
-        throw std::runtime_error(std::string("CopyToCPM: Couldn't create ") + to);
+        throw NotWritable(to);
 
     struct cpmFile file;
     cpmOpen(&ino, &file, O_WRONLY);
@@ -117,7 +117,8 @@ void CPMFileSys::CopyToCPM(const char *from, const char *to)
             if (cpmWrite(&file, buf, i) != i)
             {
                 cpmClose(&file);
-                throw std::runtime_error(std::string("CopyToCPM: cpmWrite failed for ") + to);
+                cpmUnlink(&root, to);  // Delete the partially written file
+                throw NotWritable(to);
             }
         }
     }
@@ -128,6 +129,30 @@ void CPMFileSys::CopyToCPM(const char *from, const char *to)
 }
 
 
+void CPMFileSys::Delete(const char *file)
+{
+    if (cpmUnlink(&root, file) == -1)
+        throw GeneralError(boo);
+}
+
+
+void CPMFileSys::Rename(const char *from, const char *to)
+{
+    if (cpmRename(&root, from, to) == -1)
+        throw GeneralError(boo);
+}
+
+
+void CPMFileSys::GetStat(struct CPMFSStat &stat)
+{
+    struct cpmStatFS buf;
+
+    cpmStatFS(&root, &buf);
+    stat.size = buf.f_bsize * buf.f_blocks;
+    stat.free = buf.f_bsize * buf.f_bfree;
+}
+
+
 std::string CPMFileSys::RealName(int user, const char *name)
 {
     std::string result;
@@ -135,8 +160,8 @@ std::string CPMFileSys::RealName(int user, const char *name)
     if (user < 0 || user > 99)
         user = 0;
 
-    result = '0' + user / 10;
-    result += '0' + user % 10;
+    result = '0' + (char)user / 10;
+    result += '0' + (char)user % 10;
     result += name;
 
     return result;

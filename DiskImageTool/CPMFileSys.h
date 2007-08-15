@@ -17,6 +17,12 @@ public:
         size_t size;
     };
 
+    struct CPMFSStat
+    {
+          long size;
+          long free;
+    };
+
 
     CPMFileSys(const char *name);
     ~CPMFileSys();
@@ -25,8 +31,30 @@ public:
     void GetDirectory(std::vector<DirEntry> &result);
     void CopyFromCPM(const char *from, const char *to);
     void CopyToCPM(const char *from, const char *to);
+    void Delete(const char *file);
+    void Rename(const char *from, const char *to);
+    void GetStat(struct CPMFSStat &stat);
 
     std::string RealName(int user, const char *name);
+
+
+    class GeneralError : public std::runtime_error
+    {
+    public:
+        explicit GeneralError(const std::string &detail) : std::runtime_error(detail) {}
+    };
+
+    class FileNotFound : public GeneralError
+    {
+    public:
+        explicit FileNotFound(const std::string &name) : GeneralError(name) {}
+    };
+
+    class NotWritable : public GeneralError
+    {
+    public:
+        explicit NotWritable(const std::string &name) : GeneralError(name) {}
+    };
 
 
 private:
