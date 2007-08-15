@@ -1,0 +1,32 @@
+
+#include "winver.h"
+#include "version.h"
+
+1 VERSIONINFO
+FILEVERSION VERSION_MAJOR,VERSION_MINOR,0,0
+PRODUCTVERSION VERSION_MAJOR,VERSION_MINOR,0,0
+FILEOS VOS_NT
+FILETYPE VFT_APP
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904E4"
+        BEGIN
+            VALUE "CompanyName",      "David G. Churchill"
+            VALUE "FileDescription",  "Disk Image Tool"
+            VALUE "FileVersion",      VERSION_STR
+            VALUE "InternalName",     "DiskImageTool"
+            VALUE "LegalCopyright",   COPYRIGHT
+            VALUE "OriginalFilename", "DiskImageTool.exe"
+            VALUE "ProductName",      "Disk Image Tool"
+            VALUE "ProductVersion",   VERSION_STR
+        END
+    END
+END
+
+
+DiskImageToolIcon ICON "../Images/disktool.ico"
+
+
+#define wxUSE_NO_MANIFEST 1
+#include "wx/msw/wx.rc"
