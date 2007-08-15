@@ -12,6 +12,9 @@
 #include "CPMFileSys.h"
 
 
+static const wxString apptitle("Disk Image Tool");
+
+
 class MainWindow : public MainWindowForm
 {
 public:
@@ -21,10 +24,12 @@ public:
     virtual void OnOpen(wxCommandEvent& evt);
     virtual void OnExit(wxCommandEvent& evt);
 
-    virtual void OnCut(wxCommandEvent& evt);
     virtual void OnCopy(wxCommandEvent& evt);
     virtual void OnPaste(wxCommandEvent& evt);
     virtual void OnDelete(wxCommandEvent& evt);
+
+    virtual void OnRename(wxCommandEvent& evt);
+    virtual void OnEditLabelEnd(wxListEvent& evt);
 
     virtual void OnAbout(wxCommandEvent& evt);
 
@@ -34,6 +39,15 @@ public:
 private:
     CPMFileSys *cpmfs;
     std::vector<CPMFileSys::DirEntry> dir;
+
+    enum ListColumns
+    {
+        eName = 0,  // Name is assumed to be first element in RefreshList()
+        eSize,
+        eType,
+        eUserArea
+    };
+
 
     void OpenImage(const char *name);
     void RefreshList();
@@ -56,31 +70,40 @@ private:
 
 
 BEGIN_EVENT_TABLE(MainWindow, MainWindowForm)
-EVT_LIST_BEGIN_DRAG(ID_MainList, MainWindow::OnDragItem)
+    EVT_LIST_BEGIN_DRAG(ID_MainList, MainWindow::OnDragItem)
+    EVT_LIST_END_LABEL_EDIT(wxID_ANY, MainWindow::OnEditLabelEnd)
 END_EVENT_TABLE()
 
 
 
 MainWindow::MainWindow() :
-    MainWindowForm(NULL),
+    MainWindowForm(NULL, wxID_ANY, apptitle),
     cpmfs(NULL)
 {
-    m_listCtrl->InsertColumn(0, "Name");
-    m_listCtrl->SetColumnWidth(0, 200);
+    // Icon
+    SetIcon(wxIcon("DiskImageToolIcon", wxBITMAP_TYPE_ICO_RESOURCE));
+
+
+    // List
+    m_listCtrl->InsertColumn(eName, "Name");
+    m_listCtrl->SetColumnWidth(eName, 100);
 
     wxListItem li;
     li.SetText("Size");
     li.SetAlign(wxLIST_FORMAT_RIGHT);
     li.SetMask(wxLIST_MASK_TEXT | wxLIST_MASK_FORMAT);
-    m_listCtrl->InsertColumn(1, li);
-    m_listCtrl->SetColumnWidth(1, 100);
+    m_listCtrl->InsertColumn(eSize, li);
+    m_listCtrl->SetColumnWidth(eSize, 75);
+
+    m_listCtrl->InsertColumn(eType, "Type");
+    m_listCtrl->SetColumnWidth(eType, 125);
 
     li.Clear();
     li.SetText("User Area");
     li.SetAlign(wxLIST_FORMAT_RIGHT);
     li.SetMask(wxLIST_MASK_TEXT | wxLIST_MASK_FORMAT);
-    m_listCtrl->InsertColumn(2, li);
-    m_listCtrl->SetColumnWidth(2, 100);
+    m_listCtrl->InsertColumn(eUserArea, li);
+    m_listCtrl->SetColumnWidth(eUserArea, 75);
 
     SetDropTarget(new DropTarget(*this));
 }
@@ -109,27 +132,79 @@ void MainWindow::OnExit(wxCommandEvent& WXUNUSED(evt))
 }
 
 
-void MainWindow::OnCut(wxCommandEvent& evt)
+void MainWindow::OnCopy(wxCommandEvent& WXUNUSED(evt))
 {
 }
 
 
-void MainWindow::OnCopy(wxCommandEvent& evt)
+void MainWindow::OnPaste(wxCommandEvent& WXUNUSED(evt))
 {
 }
 
 
-void MainWindow::OnPaste(wxCommandEvent& evt)
+void MainWindow::OnDelete(wxCommandEvent& WXUNUSED(evt))
 {
+    int selected = m_listCtrl->GetSelectedItemCount();
+    if (selected == 0)
+        return;
+
+    long first = m_listCtrl->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+
+    wxString conf_msg;
+    if (selected == 1)
+        conf_msg = "Are you sure you want to delete '" + dir[m_listCtrl->GetItemData(first)].name + "'?";
+    else
+        conf_msg = "Are you sure you want to delete these " + wxString::Format("%i", selected) + " items?";
+    if (wxMessageBox(conf_msg, "Confirm File Delete", wxYES_NO | wxICON_EXCLAMATION) != wxYES)
+        return;
+
+    long item = first;
+    while (item != -1)
+    {
+        cpmfs->Delete(dir[m_listCtrl->GetItemData(item)].realname.c_str());
+        item = m_listCtrl->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+    }
+
+    RefreshList();
 }
 
 
-void MainWindow::OnDelete(wxCommandEvent& evt)
+void MainWindow::OnRename(wxCommandEvent& WXUNUSED(evt))
 {
+    long focused = m_listCtrl->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_FOCUSED);
+    if (focused == -1)
+        return;
+
+    m_listCtrl->EditLabel(focused);
+
+    // Actual renaming occurs in OnEditLabelEnd()
 }
 
 
-void MainWindow::OnAbout(wxCommandEvent& evt)
+void MainWindow::OnEditLabelEnd(wxListEvent& evt)
+{
+    if (evt.IsEditCancelled())
+        return;
+
+    // new name
+    wxFileName fname(evt.GetLabel());
+    size_t namelen = fname.GetName().Len();
+    size_t extlen = fname.GetExt().Len();
+    if (namelen > 8 || extlen > 3 || namelen + extlen == 0)
+    {
+        wxMessageBox("Filename must be in 8.3 format", "Error", wxOK | wxICON_ERROR);
+        evt.Veto();
+        return;
+    }
+
+    wxString dest = "00" + fname.GetName() + "." + fname.GetExt();
+    cpmfs->Rename(dir[m_listCtrl->GetItemData(evt.GetIndex())].realname.c_str(), dest.c_str());
+
+    RefreshList();
+}
+
+
+void MainWindow::OnAbout(wxCommandEvent& WXUNUSED(evt))
 {
     wxAboutDialogInfo info;
 
@@ -148,6 +223,7 @@ void MainWindow::OpenImage(const char *name)
         delete cpmfs;
 
     cpmfs = new CPMFileSys(name);
+    SetTitle(wxFileName(name).GetFullName() + " - " + apptitle);
     RefreshList();
 }
 
@@ -166,19 +242,33 @@ void MainWindow::RefreshList()
 
             std::ostringstream ss;
             ss << dir[i].size / 1024 << " KB";
-            m_listCtrl->SetItem(ind, 1, ss.str());
+            m_listCtrl->SetItem(ind, eSize, ss.str());
+
+            wxString ext = wxFileName(dir[i].name).GetExt().Upper();
+            wxString type_desc;
+            if (ext == "MWB")
+                type_desc = "MicroWorld Basic File";
+            else if (ext == "COM")
+                type_desc = "Command File";
+            else
+                type_desc = ext + " File";
+            m_listCtrl->SetItem(ind, eType, type_desc);
 
             ss.str("");
             ss << dir[i].user;
-            m_listCtrl->SetItem(ind, 2, ss.str());
+            m_listCtrl->SetItem(ind, eUserArea, ss.str());
 
             m_listCtrl->SetItemData(ind, i);
         }
     }
+
+    struct CPMFileSys::CPMFSStat stat;
+    cpmfs->GetStat(stat);
+    GetStatusBar()->SetStatusText(wxString::Format("Disk space free: %i KB  (%i KB total)", stat.free/1024, stat.size/1024));
 }
 
 
-void MainWindow::OnDragItem(wxListEvent& evt)
+void MainWindow::OnDragItem(wxListEvent& WXUNUSED(evt))
 {
     if (m_listCtrl->GetSelectedItemCount() == 0)
         return;
@@ -198,8 +288,10 @@ void MainWindow::OnDragItem(wxListEvent& evt)
         fdo.AddFile(dest);
     }
 
+    // !!! TODO: Create / clean up temp dir
     wxDropSource source(fdo, this);
     wxDragResult result = source.DoDragDrop();
+    // TODO: Move vs copy
 }
 
 
@@ -214,6 +306,8 @@ bool MainWindow::DropTarget::OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y
         wxFileName fname(filenames[i]);
 
         wxString dest = "00" + fname.GetName().Left(8) + "." + fname.GetExt().Left(3);
+
+        // !!! TODO: Overwrite check
         mw.cpmfs->CopyToCPM(filenames[i].c_str(), dest.c_str());
     }
 
