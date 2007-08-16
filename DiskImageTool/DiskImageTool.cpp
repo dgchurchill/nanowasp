@@ -30,6 +30,7 @@ public:
 
     virtual void OnRename(wxCommandEvent& evt);
     virtual void OnEditLabelEnd(wxListEvent& evt);
+    virtual void OnListSort(wxListEvent& evt);
 
     virtual void OnAbout(wxCommandEvent& evt);
 
@@ -48,9 +49,16 @@ private:
         eUserArea
     };
 
+    long sort_col;
+    bool sort_reversed;
+
 
     void OpenImage(const char *name);
     void RefreshList();
+    void DoSort();
+
+    static int wxCALLBACK listCompare(long item1, long item2, long col);
+    static int wxCALLBACK listCompareReverse(long item1, long item2, long col);
 
 
     class DropTarget : public wxFileDropTarget
@@ -72,13 +80,16 @@ private:
 BEGIN_EVENT_TABLE(MainWindow, MainWindowForm)
     EVT_LIST_BEGIN_DRAG(ID_MainList, MainWindow::OnDragItem)
     EVT_LIST_END_LABEL_EDIT(wxID_ANY, MainWindow::OnEditLabelEnd)
+    EVT_LIST_COL_CLICK(wxID_ANY, MainWindow::OnListSort)
 END_EVENT_TABLE()
 
 
 
 MainWindow::MainWindow() :
     MainWindowForm(NULL, wxID_ANY, apptitle),
-    cpmfs(NULL)
+    cpmfs(NULL),
+    sort_col(eName),
+    sort_reversed(false)
 {
     // Icon
     SetIcon(wxIcon("DiskImageToolIcon", wxBITMAP_TYPE_ICO_RESOURCE));
@@ -149,10 +160,11 @@ void MainWindow::OnDelete(wxCommandEvent& WXUNUSED(evt))
         return;
 
     long first = m_listCtrl->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+    struct CPMFileSys::DirEntry *dirent = (struct CPMFileSys::DirEntry *)(m_listCtrl->GetItemData(first));
 
     wxString conf_msg;
     if (selected == 1)
-        conf_msg = "Are you sure you want to delete '" + dir[m_listCtrl->GetItemData(first)].name + "'?";
+        conf_msg = "Are you sure you want to delete '" + dirent->name + "'?";
     else
         conf_msg = "Are you sure you want to delete these " + wxString::Format("%i", selected) + " items?";
     if (wxMessageBox(conf_msg, "Confirm File Delete", wxYES_NO | wxICON_EXCLAMATION) != wxYES)
@@ -161,7 +173,8 @@ void MainWindow::OnDelete(wxCommandEvent& WXUNUSED(evt))
     long item = first;
     while (item != -1)
     {
-        cpmfs->Delete(dir[m_listCtrl->GetItemData(item)].realname.c_str());
+        dirent = (struct CPMFileSys::DirEntry *)(m_listCtrl->GetItemData(item));
+        cpmfs->Delete(dirent->realname.c_str());
         item = m_listCtrl->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
     }
 
@@ -198,10 +211,74 @@ void MainWindow::OnEditLabelEnd(wxListEvent& evt)
     }
 
     wxString dest = "00" + fname.GetName() + "." + fname.GetExt();
-    cpmfs->Rename(dir[m_listCtrl->GetItemData(evt.GetIndex())].realname.c_str(), dest.c_str());
+    struct CPMFileSys::DirEntry *dirent = (struct CPMFileSys::DirEntry *)(m_listCtrl->GetItemData(evt.GetIndex()));
+    cpmfs->Rename(dirent->realname.c_str(), dest.c_str());
 
     RefreshList();
 }
+
+
+void MainWindow::OnListSort(wxListEvent& evt)
+{
+    if (evt.GetColumn() == -1)
+        return;  // Click was outside all headers
+
+    if (evt.GetColumn() == sort_col)
+    {
+        sort_reversed = !sort_reversed;
+    }
+    else
+    {
+        sort_col = evt.GetColumn();
+        sort_reversed = false;
+    }
+
+    DoSort();
+}
+
+
+void MainWindow::DoSort()
+{
+    if (sort_reversed)
+        m_listCtrl->SortItems(MainWindow::listCompareReverse, sort_col);
+    else
+        m_listCtrl->SortItems(MainWindow::listCompare, sort_col);
+}
+
+
+int wxCALLBACK MainWindow::listCompareReverse(long item1, long item2, long col)
+{
+    return -listCompare(item1, item2, col);
+}
+
+
+int wxCALLBACK MainWindow::listCompare(long item1, long item2, long col)
+{
+    struct CPMFileSys::DirEntry *dirent1 = (struct CPMFileSys::DirEntry *)item1;
+    struct CPMFileSys::DirEntry *dirent2 = (struct CPMFileSys::DirEntry *)item2;
+
+    switch (col)
+    {
+    case eName:
+        return wxString(dirent1->name).CmpNoCase(dirent2->name);
+        break;
+
+    case eSize:
+        return (int)(dirent1->size - dirent2->size);
+        break;
+
+    case eType:
+        return wxFileName(dirent1->name).GetExt().CmpNoCase(wxFileName(dirent2->name).GetExt());
+        break;
+
+    case eUserArea:
+        return dirent1->user - dirent2->user;
+        break;
+    }
+
+    return 0;
+}
+
 
 
 void MainWindow::OnAbout(wxCommandEvent& WXUNUSED(evt))
@@ -225,6 +302,10 @@ void MainWindow::OpenImage(const char *name)
     cpmfs = new CPMFileSys(name);
     SetTitle(wxFileName(name).GetFullName() + " - " + apptitle);
     RefreshList();
+
+    sort_col = eName;
+    sort_reversed = false;
+    DoSort();
 }
 
 
@@ -258,7 +339,7 @@ void MainWindow::RefreshList()
             ss << dir[i].user;
             m_listCtrl->SetItem(ind, eUserArea, ss.str());
 
-            m_listCtrl->SetItemData(ind, i);
+            m_listCtrl->SetItemPtrData(ind, (wxUIntPtr)&dir[i]);
         }
     }
 
@@ -279,9 +360,7 @@ void MainWindow::OnDragItem(wxListEvent& WXUNUSED(evt))
     long item = -1;
     while ((item = m_listCtrl->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED)) != -1)
     {
-        CPMFileSys::DirEntry *de;
-
-        de = &dir[m_listCtrl->GetItemData(item)];
+        CPMFileSys::DirEntry *de = (struct CPMFileSys::DirEntry *)(m_listCtrl->GetItemData(item));
         wxString dest = wxStandardPaths::Get().GetTempDir() + "\\" + de->name;
         cpmfs->CopyFromCPM(de->realname.c_str(), dest.c_str());
 
