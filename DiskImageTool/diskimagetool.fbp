@@ -144,32 +144,6 @@
                         <property name="checked">0</property>
                         <property name="enabled">1</property>
                         <property name="help"></property>
-                        <property name="id">wxID_COPY</property>
-                        <property name="kind">wxITEM_NORMAL</property>
-                        <property name="label">&amp;Copy</property>
-                        <property name="name">menuItem41</property>
-                        <property name="shortcut">Ctrl+C</property>
-                        <property name="unchecked_bitmap"></property>
-                        <event name="OnMenuSelection">OnCopy</event>
-                    </object>
-                    <object class="wxMenuItem" expanded="1">
-                        <property name="bitmap"></property>
-                        <property name="checked">0</property>
-                        <property name="enabled">1</property>
-                        <property name="help"></property>
-                        <property name="id">wxID_PASTE</property>
-                        <property name="kind">wxITEM_NORMAL</property>
-                        <property name="label">&amp;Paste</property>
-                        <property name="name">menuItem51</property>
-                        <property name="shortcut">Ctrl+V</property>
-                        <property name="unchecked_bitmap"></property>
-                        <event name="OnMenuSelection">OnPaste</event>
-                    </object>
-                    <object class="wxMenuItem" expanded="1">
-                        <property name="bitmap"></property>
-                        <property name="checked">0</property>
-                        <property name="enabled">1</property>
-                        <property name="help"></property>
                         <property name="id">wxID_DELETE</property>
                         <property name="kind">wxITEM_NORMAL</property>
                         <property name="label">&amp;Delete</property>

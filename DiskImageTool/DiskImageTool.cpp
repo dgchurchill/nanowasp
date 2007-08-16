@@ -24,8 +24,6 @@ public:
     virtual void OnOpen(wxCommandEvent& evt);
     virtual void OnExit(wxCommandEvent& evt);
 
-    virtual void OnCopy(wxCommandEvent& evt);
-    virtual void OnPaste(wxCommandEvent& evt);
     virtual void OnDelete(wxCommandEvent& evt);
 
     virtual void OnRename(wxCommandEvent& evt);
@@ -140,16 +138,6 @@ void MainWindow::OnOpen(wxCommandEvent& WXUNUSED(evt))
 void MainWindow::OnExit(wxCommandEvent& WXUNUSED(evt))
 {
     Close(true);
-}
-
-
-void MainWindow::OnCopy(wxCommandEvent& WXUNUSED(evt))
-{
-}
-
-
-void MainWindow::OnPaste(wxCommandEvent& WXUNUSED(evt))
-{
 }
 
 
