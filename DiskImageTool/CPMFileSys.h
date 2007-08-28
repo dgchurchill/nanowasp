@@ -33,7 +33,9 @@ public:
     void CopyToCPM(const char *from, const char *to);
     void Delete(const char *file);
     void Rename(const char *from, const char *to);
+    bool Exists(const char *file);
     void GetStat(struct CPMFSStat &stat);
+    bool IsReadOnly();
 
     std::string RealName(int user, const char *name);
 

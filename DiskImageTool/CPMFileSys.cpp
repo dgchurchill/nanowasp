@@ -143,6 +143,14 @@ void CPMFileSys::Rename(const char *from, const char *to)
 }
 
 
+bool CPMFileSys::Exists(const char *file)
+{
+    struct cpmInode inode;
+
+    return cpmNamei(&root, file, &inode) == 0;
+}
+
+
 void CPMFileSys::GetStat(struct CPMFSStat &stat)
 {
     struct cpmStatFS buf;
@@ -150,6 +158,20 @@ void CPMFileSys::GetStat(struct CPMFSStat &stat)
     cpmStatFS(&root, &buf);
     stat.size = buf.f_bsize * buf.f_blocks;
     stat.free = buf.f_bsize * buf.f_bfree;
+}
+
+
+bool CPMFileSys::IsReadOnly()
+{
+    unsigned char status;
+
+    // The direct call to dsk_drive_status isn't very nice given cpmtools ability to use
+    // multiple drivers...  Consider CPMFileSys as a class which provides access to CP/M
+    // filesystems using libdsk for the underlying disk access.
+    if (dsk_drive_status(superblock.dev.dev, &superblock.dev.geom, 0, &status) == DSK_ERR_OK)
+        return (status & DSK_ST3_RO) != 0;
+    else
+        return true;  // Write protected by default
 }
 
 
