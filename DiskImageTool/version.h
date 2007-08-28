@@ -6,6 +6,7 @@
 #define VERSION_MAJOR 1
 #define VERSION_MINOR 0
 
+#define APPNAME "Disk Image Tool"
 #define COPYRIGHT "Copyright © 2007 David G. Churchill"
 #define CONTACT "almostdave@gmail.com"
 

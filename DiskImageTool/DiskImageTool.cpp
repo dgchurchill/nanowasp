@@ -8,11 +8,9 @@
 #include <sstream>
 #include <iomanip>
 
+#include "version.h"
 #include "Forms.h"
 #include "CPMFileSys.h"
-
-
-static const wxString apptitle("Disk Image Tool");
 
 
 class MainWindow : public MainWindowForm
@@ -37,6 +35,7 @@ public:
 
 private:
     CPMFileSys *cpmfs;
+    bool read_only;  // Current disk is being treated as read-only (cached when opening new file)
     std::vector<CPMFileSys::DirEntry> dir;
 
     enum ListColumns
@@ -54,6 +53,7 @@ private:
     void OpenImage(const char *name);
     void RefreshList();
     void DoSort();
+    void DeleteSelected();
 
     static int wxCALLBACK listCompare(long item1, long item2, long col);
     static int wxCALLBACK listCompareReverse(long item1, long item2, long col);
@@ -84,8 +84,9 @@ END_EVENT_TABLE()
 
 
 MainWindow::MainWindow() :
-    MainWindowForm(NULL, wxID_ANY, apptitle),
+    MainWindowForm(NULL, wxID_ANY, APPNAME),
     cpmfs(NULL),
+    read_only(true),
     sort_col(eName),
     sort_reversed(false)
 {
@@ -113,8 +114,6 @@ MainWindow::MainWindow() :
     li.SetMask(wxLIST_MASK_TEXT | wxLIST_MASK_FORMAT);
     m_listCtrl->InsertColumn(eUserArea, li);
     m_listCtrl->SetColumnWidth(eUserArea, 75);
-
-    SetDropTarget(new DropTarget(*this));
 }
 
 
@@ -147,6 +146,12 @@ void MainWindow::OnDelete(wxCommandEvent& WXUNUSED(evt))
     if (selected == 0)
         return;
 
+    if (read_only)
+    {
+        wxMessageBox("Disk image is read-only.", "Error", wxOK | wxICON_ERROR);
+        return;
+    }
+
     long first = m_listCtrl->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
     struct CPMFileSys::DirEntry *dirent = (struct CPMFileSys::DirEntry *)(m_listCtrl->GetItemData(first));
 
@@ -158,12 +163,31 @@ void MainWindow::OnDelete(wxCommandEvent& WXUNUSED(evt))
     if (wxMessageBox(conf_msg, "Confirm File Delete", wxYES_NO | wxICON_EXCLAMATION) != wxYES)
         return;
 
-    long item = first;
-    while (item != -1)
+    DeleteSelected();
+}
+
+
+void MainWindow::DeleteSelected()
+{
+    if (m_listCtrl->GetSelectedItemCount() == 0 || read_only)
+        return;
+
+
+    struct CPMFileSys::DirEntry *dirent;
+    long item = m_listCtrl->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+
+    try
     {
-        dirent = (struct CPMFileSys::DirEntry *)(m_listCtrl->GetItemData(item));
-        cpmfs->Delete(dirent->realname.c_str());
-        item = m_listCtrl->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+        while (item != -1)
+        {
+            dirent = (struct CPMFileSys::DirEntry *)(m_listCtrl->GetItemData(item));
+            cpmfs->Delete(dirent->realname.c_str());
+            item = m_listCtrl->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+        }
+    }
+    catch (CPMFileSys::GeneralError &ex)
+    {
+        wxMessageBox(wxString("Failed to delete file ") + dirent->name + wxString(".  ") + ex.what(), "Error", wxOK | wxICON_ERROR);
     }
 
     RefreshList();
@@ -172,6 +196,12 @@ void MainWindow::OnDelete(wxCommandEvent& WXUNUSED(evt))
 
 void MainWindow::OnRename(wxCommandEvent& WXUNUSED(evt))
 {
+    if (read_only)
+    {
+        wxMessageBox("Disk image is read-only.", "Error", wxOK | wxICON_ERROR);
+        return;
+    }
+
     long focused = m_listCtrl->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_FOCUSED);
     if (focused == -1)
         return;
@@ -184,7 +214,7 @@ void MainWindow::OnRename(wxCommandEvent& WXUNUSED(evt))
 
 void MainWindow::OnEditLabelEnd(wxListEvent& evt)
 {
-    if (evt.IsEditCancelled())
+    if (evt.IsEditCancelled() || read_only)
         return;
 
     // new name
@@ -200,7 +230,14 @@ void MainWindow::OnEditLabelEnd(wxListEvent& evt)
 
     wxString dest = "00" + fname.GetName() + "." + fname.GetExt();
     struct CPMFileSys::DirEntry *dirent = (struct CPMFileSys::DirEntry *)(m_listCtrl->GetItemData(evt.GetIndex()));
-    cpmfs->Rename(dirent->realname.c_str(), dest.c_str());
+    try
+    {
+        cpmfs->Rename(dirent->realname.c_str(), dest.c_str());
+    }
+    catch (CPMFileSys::GeneralError &ex)
+    {
+        wxMessageBox(wxString("Failed to rename file ") + dirent->name + wxString(".  ") + ex.what(), "Error", wxOK | wxICON_ERROR);
+    }
 
     RefreshList();
 }
@@ -273,6 +310,7 @@ void MainWindow::OnAbout(wxCommandEvent& WXUNUSED(evt))
 {
     wxAboutDialogInfo info;
 
+    info.SetIcon(wxIcon("DiskImageToolIcon", wxBITMAP_TYPE_ICO_RESOURCE));
     info.SetName("Disk Image Tool");
     info.SetVersion("1.0");
     info.SetCopyright("Copyright © 2007 David G. Churchill");
@@ -288,12 +326,14 @@ void MainWindow::OpenImage(const char *name)
         delete cpmfs;
 
     cpmfs = new CPMFileSys(name);
-    SetTitle(wxFileName(name).GetFullName() + " - " + apptitle);
-    RefreshList();
+    read_only = cpmfs->IsReadOnly();
+    SetTitle(wxFileName(name).GetFullName() + (read_only ? " (Read-only) - " : " - ") + APPNAME);
 
     sort_col = eName;
     sort_reversed = false;
-    DoSort();
+    RefreshList();
+
+    m_listCtrl->SetDropTarget(read_only ? NULL : new DropTarget(*this));
 }
 
 
@@ -331,6 +371,8 @@ void MainWindow::RefreshList()
         }
     }
 
+    DoSort();
+
     struct CPMFileSys::CPMFSStat stat;
     cpmfs->GetStat(stat);
     GetStatusBar()->SetStatusText(wxString::Format("Disk space free: %i KB  (%i KB total)", stat.free/1024, stat.size/1024));
@@ -343,22 +385,70 @@ void MainWindow::OnDragItem(wxListEvent& WXUNUSED(evt))
         return;
 
 
-    wxFileDataObject fdo;
-
-    long item = -1;
-    while ((item = m_listCtrl->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED)) != -1)
+    // Create a temporary directory where the files can be extracted without overwriting anything
+    wxString temp_dir;
+    wxString base_dirname = wxStandardPaths::Get().GetTempDir() + wxFILE_SEP_PATH + APPNAME + 
+                            wxString::Format("-%lu-", wxGetProcessId()) + wxDateTime::Now().Format("%Y%m%d%H%M%S");
+    const int max_retries = 10;
+    int i = 0;
+    while (true)
     {
-        CPMFileSys::DirEntry *de = (struct CPMFileSys::DirEntry *)(m_listCtrl->GetItemData(item));
-        wxString dest = wxStandardPaths::Get().GetTempDir() + "\\" + de->name;
-        cpmfs->CopyFromCPM(de->realname.c_str(), dest.c_str());
+        temp_dir = base_dirname + wxString::Format("-%i", i);
+        if (wxMkdir(temp_dir, 0700))
+            break;
 
-        fdo.AddFile(dest);
+        ++i;
+        if (i >= max_retries)
+        {
+            wxMessageBox("Unable to create temporary directory " + temp_dir, "Error", wxOK | wxICON_ERROR);
+            return;
+        }
     }
 
-    // !!! TODO: Create / clean up temp dir
-    wxDropSource source(fdo, this);
-    wxDragResult result = source.DoDragDrop();
-    // TODO: Move vs copy
+
+    // Copy out the selected items to the temp directory, and build a list of the files for the wxDropSource
+    wxFileDataObject fdo;
+    wxArrayString files;
+    long item = -1;
+    CPMFileSys::DirEntry *de;
+    try
+    {
+        while ((item = m_listCtrl->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED)) != -1)
+        {
+            de = (struct CPMFileSys::DirEntry *)(m_listCtrl->GetItemData(item));
+            wxString dest = temp_dir + wxFILE_SEP_PATH + de->name;
+            cpmfs->CopyFromCPM(de->realname.c_str(), dest.c_str());
+
+            fdo.AddFile(dest);
+        }
+
+        files = fdo.GetFilenames();  // Create a local copy of the names in case wxDropSource does something funky with fdo
+
+
+        // Do the drag
+        wxDropSource source(fdo, this);
+        wxDragResult result = source.DoDragDrop(wxDrag_CopyOnly);
+
+      // TODO: Allow move when drag and dropping (because the files are extracted to
+      //       a temporary directory, the shell optimises the move, so the return code is
+      //       wxDragNone instead of wxDragMove).
+
+    /*    if (result == wxDragMove)
+            DeleteSelected(); */
+    }
+    catch (CPMFileSys::GeneralError &)
+    {
+        // this error dialog will kill the drag event...
+        wxMessageBox("Unable to create temporary copy of file " + de->name, "Error", wxOK | wxICON_ERROR);
+
+        files = fdo.GetFilenames(); // prepare for the cleanup code to be executed
+    }
+
+
+    // Clean up the temp files and directory
+    for (size_t i = 0; i < files.GetCount(); ++i)
+        wxRemoveFile(files[i]);
+    wxRmdir(temp_dir);
 }
 
 
@@ -368,18 +458,38 @@ bool MainWindow::DropTarget::OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y
         return false;
 
 
-    for (unsigned int i = 0; i < filenames.GetCount(); ++i)
+    try
     {
-        wxFileName fname(filenames[i]);
+        for (unsigned int i = 0; i < filenames.GetCount(); ++i)
+        {
+            wxFileName fname(filenames[i]);
 
-        wxString dest = "00" + fname.GetName().Left(8) + "." + fname.GetExt().Left(3);
+            wxString dest = fname.GetName().Left(8) + "." + fname.GetExt().Left(3);
+            wxString dest_real = "00" + dest;
 
-        // !!! TODO: Overwrite check
-        mw.cpmfs->CopyToCPM(filenames[i].c_str(), dest.c_str());
+            if (mw.cpmfs->Exists(dest_real.c_str()))
+            {
+                if (wxMessageBox("This disk image already contains a file named '" + dest + "'.  " 
+                                 "Would you like to replace the existing file?", 
+                                 "Confirm File Replace", wxYES_NO, &mw) == wxYES)
+                {
+                    mw.cpmfs->Delete(dest_real.c_str());
+                }
+                else
+                    continue;
+            }
+
+            mw.cpmfs->CopyToCPM(filenames[i].c_str(), dest_real.c_str());
+        }
+    }
+    catch (CPMFileSys::GeneralError &)
+    {
+        wxMessageBox("Failed to copy file to disk image (disk full?).", "Error", wxOK | wxICON_ERROR);
+        mw.RefreshList();
+        return false;
     }
 
     mw.RefreshList();
-
     return true;
 }
 
