@@ -96,6 +96,8 @@ public:
 
     virtual const char *what() const throw () { return msg.c_str(); }
 
+    virtual ~ConfigError() throw() {}
+    
 private:
     std::string msg;
 };

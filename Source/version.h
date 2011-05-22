@@ -25,7 +25,7 @@
 #define VERSION_MINOR 0
 #define VERSION_BETA
 
-#define COPYRIGHT "Copyright © 2000-2007 David G. Churchill"
-#define CONTACT "almostdave@gmail.com"
+#define COPYRIGHT "Copyright (c) 2000-2007 David G. Churchill"
+#define CONTACT "dave@ninthcuriosity.com"
 
 #endif // VERSION_H

@@ -40,7 +40,7 @@ CRTCMemory::CRTCMemory(Microbee &mbee_, const TiXmlElement &config_) :
     crt_c(NULL),
     video_ram(cVideoRAMSize),
     pcg_ram(cPCGRAMSize),
-    char_rom(cCharROMSize)
+    char_rom(mbee_, cCharROMSize)
 {
     // Load the char ROM data
     const char *file;

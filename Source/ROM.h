@@ -33,7 +33,7 @@ public:
 
     /*! \brief Creates a new empty ROM device of \p size_ bytes.  Contents should be loaded
      *         using LoadROM() */
-    ROM(unsigned int size_);
+    ROM(Microbee &, unsigned int size_);
 
     //! Loads the ROM with the contents of \p filename
     void LoadROM(const char *filename);
@@ -43,6 +43,9 @@ public:
     virtual byte Read(word addr) { return memory[addr]; };
 
     std::vector<byte> memory;  //!< The contents of the ROM
+    
+private:
+    Microbee& mbee;
 };
 
 

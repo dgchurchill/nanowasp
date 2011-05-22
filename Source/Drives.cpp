@@ -83,7 +83,7 @@ void Drives::LateInit()
 
         try
         {
-            LoadDisk(drv, file);
+            LoadDisk(drv, mbee.GetConfigFileName().GetPath(wxPATH_GET_SEPARATOR) + file);
         }
         catch (OutOfRange &)
         {

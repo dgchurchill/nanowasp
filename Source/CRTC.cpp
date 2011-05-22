@@ -21,7 +21,11 @@
 #include "stdafx.h"
 #include "CRTC.h"
 
+#ifdef __WXOSX__
+#include <OpenGL/glu.h>
+#else
 #include <GL/glu.h>
+#endif
 
 #include "Terminal.h"
 #include "CRTCMemory.h"

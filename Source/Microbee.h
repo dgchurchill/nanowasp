@@ -22,6 +22,7 @@
 
 #include <map>
 #include <vector>
+#include <wx/filename.h>
 #include "tinyxml/tinyxml.h"
 
 class Device;
@@ -96,7 +97,10 @@ public:
 
 
     //! Returns the current emulation time in microseconds
-    Microbee::time_t GetTime();
+    Microbee::time_t GetTime() const;
+    
+    //! Returns the absolute filename of the current configuration file
+    const wxFileName& GetConfigFileName() const { return configFileName; }
 
 
 private:
@@ -123,6 +127,7 @@ private:
 
     Microbee::time_t emu_time;  //!< Current emulation time (= 0 at reset)
 
+    wxFileName configFileName;
 
     // Private copy constuctor and assigment operator to prevent copies
     Microbee(const Microbee &);

@@ -23,7 +23,12 @@
 
 #include <sstream>
 #include <limits>
+
+#ifdef __WXOSX__
+#include <OpenGL/glu.h>
+#else
 #include <GL/glu.h>
+#endif
 
 #include "Terminal.h"
 #include "Device.h"
@@ -37,9 +42,13 @@ Microbee::Microbee(Terminal &scr_, const char *config_file) :
     paused(false),
     pause_cond(pause_mutex),
     scr(scr_),
-    current_dev(NULL)
+    current_dev(NULL),
+    emu_time(0),
+    configFileName(config_file)
 {
     pause_mutex.Lock();
+    
+    configFileName.MakeAbsolute();
 
     TiXmlDocument config(config_file);
     if (!config.LoadFile())
@@ -262,7 +271,7 @@ void Microbee::Reset()
     main loop of the emulator is executing a different device than during the previous call, but for the
     same emulated period of time).
  */
-Microbee::time_t Microbee::GetTime()
+Microbee::time_t Microbee::GetTime() const
 {
     if (current_dev)
         return current_dev->GetTime();

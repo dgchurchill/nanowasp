@@ -30,7 +30,7 @@
 Disk::Disk(const char *name) :
     disk(NULL)
 {
-    char *type = "dsk";
+    const char *type = "dsk";
 
     std::string name_str(name);
     if (name_str.length() >= 4)

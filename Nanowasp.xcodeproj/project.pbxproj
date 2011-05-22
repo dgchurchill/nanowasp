@@ -1,0 +1,493 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		553522DB1385469A00B47753 /* CRTC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 553522461384F34F00B47753 /* CRTC.cpp */; };
+		553522DC1385469A00B47753 /* CRTCMemory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 553522481384F34F00B47753 /* CRTCMemory.cpp */; };
+		553522DD1385469A00B47753 /* DeviceFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5535224B1384F34F00B47753 /* DeviceFactory.cpp */; };
+		553522DE1385469A00B47753 /* Disk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5535224D1384F34F00B47753 /* Disk.cpp */; };
+		553522DF1385469A00B47753 /* Drives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5535224F1384F34F00B47753 /* Drives.cpp */; };
+		553522E01385469A00B47753 /* FDC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 553522521384F34F00B47753 /* FDC.cpp */; };
+		553522E11385469A00B47753 /* Forms.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 553522541384F34F00B47753 /* Forms.cpp */; };
+		553522E21385469A00B47753 /* Keyboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 553522561384F34F00B47753 /* Keyboard.cpp */; };
+		553522E31385469A00B47753 /* LatchROM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 553522581384F34F00B47753 /* LatchROM.cpp */; };
+		553522E41385469A00B47753 /* MainWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5535225A1384F34F00B47753 /* MainWindow.cpp */; };
+		553522E51385469A00B47753 /* MemMapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5535225C1384F34F00B47753 /* MemMapper.cpp */; };
+		553522E61385469A00B47753 /* Microbee.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5535225F1384F34F00B47753 /* Microbee.cpp */; };
+		553522E71385469A00B47753 /* Nanowasp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 553522611384F34F00B47753 /* Nanowasp.cpp */; };
+		553522E81385469A00B47753 /* RAM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 553522661384F34F00B47753 /* RAM.cpp */; };
+		553522E91385469A00B47753 /* ROM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 553522681384F34F00B47753 /* ROM.cpp */; };
+		553522EA1385469A00B47753 /* stdafx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5535226A1384F34F00B47753 /* stdafx.cpp */; };
+		553522EB1385469A00B47753 /* Terminal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5535226C1384F34F00B47753 /* Terminal.cpp */; };
+		553522EC1385469A00B47753 /* tinystr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5535226F1384F34F00B47753 /* tinystr.cpp */; };
+		553522ED1385469A00B47753 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 553522711384F34F00B47753 /* tinyxml.cpp */; };
+		553522EE1385469A00B47753 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 553522731384F34F00B47753 /* tinyxmlerror.cpp */; };
+		553522EF1385469A00B47753 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 553522741384F34F00B47753 /* tinyxmlparser.cpp */; };
+		553522F01385469A00B47753 /* Z80CPU.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5535227C1384F34F00B47753 /* Z80CPU.cpp */; };
+		553522F41385F31700B47753 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 553522F31385F31700B47753 /* OpenGL.framework */; };
+		5589335F1386334300716A25 /* libdsk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5589335E1386334300716A25 /* libdsk.a */; };
+		558933611386351200716A25 /* Microbee.xml in Resources */ = {isa = PBXBuildFile; fileRef = 558933601386351100716A25 /* Microbee.xml */; };
+		55EA558B1388E14D004A1EA4 /* Data in Resources */ = {isa = PBXBuildFile; fileRef = 55EA558A1388E14D004A1EA4 /* Data */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		553522461384F34F00B47753 /* CRTC.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CRTC.cpp; sourceTree = "<group>"; };
+		553522471384F34F00B47753 /* CRTC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CRTC.h; sourceTree = "<group>"; };
+		553522481384F34F00B47753 /* CRTCMemory.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CRTCMemory.cpp; sourceTree = "<group>"; };
+		553522491384F34F00B47753 /* CRTCMemory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CRTCMemory.h; sourceTree = "<group>"; };
+		5535224A1384F34F00B47753 /* Device.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Device.h; sourceTree = "<group>"; };
+		5535224B1384F34F00B47753 /* DeviceFactory.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DeviceFactory.cpp; sourceTree = "<group>"; };
+		5535224C1384F34F00B47753 /* DeviceFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeviceFactory.h; sourceTree = "<group>"; };
+		5535224D1384F34F00B47753 /* Disk.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Disk.cpp; sourceTree = "<group>"; };
+		5535224E1384F34F00B47753 /* Disk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Disk.h; sourceTree = "<group>"; };
+		5535224F1384F34F00B47753 /* Drives.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Drives.cpp; sourceTree = "<group>"; };
+		553522501384F34F00B47753 /* Drives.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Drives.h; sourceTree = "<group>"; };
+		553522511384F34F00B47753 /* Exceptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Exceptions.h; sourceTree = "<group>"; };
+		553522521384F34F00B47753 /* FDC.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FDC.cpp; sourceTree = "<group>"; };
+		553522531384F34F00B47753 /* FDC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDC.h; sourceTree = "<group>"; };
+		553522541384F34F00B47753 /* Forms.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Forms.cpp; sourceTree = "<group>"; };
+		553522551384F34F00B47753 /* Forms.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Forms.h; sourceTree = "<group>"; };
+		553522561384F34F00B47753 /* Keyboard.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Keyboard.cpp; sourceTree = "<group>"; };
+		553522571384F34F00B47753 /* Keyboard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Keyboard.h; sourceTree = "<group>"; };
+		553522581384F34F00B47753 /* LatchROM.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LatchROM.cpp; sourceTree = "<group>"; };
+		553522591384F34F00B47753 /* LatchROM.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LatchROM.h; sourceTree = "<group>"; };
+		5535225A1384F34F00B47753 /* MainWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MainWindow.cpp; sourceTree = "<group>"; };
+		5535225B1384F34F00B47753 /* MainWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainWindow.h; sourceTree = "<group>"; };
+		5535225C1384F34F00B47753 /* MemMapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MemMapper.cpp; sourceTree = "<group>"; };
+		5535225D1384F34F00B47753 /* MemMapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MemMapper.h; sourceTree = "<group>"; };
+		5535225E1384F34F00B47753 /* MemoryDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MemoryDevice.h; sourceTree = "<group>"; };
+		5535225F1384F34F00B47753 /* Microbee.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Microbee.cpp; sourceTree = "<group>"; };
+		553522601384F34F00B47753 /* Microbee.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Microbee.h; sourceTree = "<group>"; };
+		553522611384F34F00B47753 /* Nanowasp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Nanowasp.cpp; sourceTree = "<group>"; };
+		553522621384F34F00B47753 /* Nanowasp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Nanowasp.h; sourceTree = "<group>"; };
+		553522631384F34F00B47753 /* NullMemory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NullMemory.h; sourceTree = "<group>"; };
+		553522641384F34F00B47753 /* NullPort.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NullPort.h; sourceTree = "<group>"; };
+		553522651384F34F00B47753 /* PortDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PortDevice.h; sourceTree = "<group>"; };
+		553522661384F34F00B47753 /* RAM.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RAM.cpp; sourceTree = "<group>"; };
+		553522671384F34F00B47753 /* RAM.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RAM.h; sourceTree = "<group>"; };
+		553522681384F34F00B47753 /* ROM.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ROM.cpp; sourceTree = "<group>"; };
+		553522691384F34F00B47753 /* ROM.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ROM.h; sourceTree = "<group>"; };
+		5535226A1384F34F00B47753 /* stdafx.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = stdafx.cpp; sourceTree = "<group>"; };
+		5535226B1384F34F00B47753 /* stdafx.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stdafx.h; sourceTree = "<group>"; };
+		5535226C1384F34F00B47753 /* Terminal.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Terminal.cpp; sourceTree = "<group>"; };
+		5535226D1384F34F00B47753 /* Terminal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Terminal.h; sourceTree = "<group>"; };
+		5535226F1384F34F00B47753 /* tinystr.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tinystr.cpp; sourceTree = "<group>"; };
+		553522701384F34F00B47753 /* tinystr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tinystr.h; sourceTree = "<group>"; };
+		553522711384F34F00B47753 /* tinyxml.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxml.cpp; sourceTree = "<group>"; };
+		553522721384F34F00B47753 /* tinyxml.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tinyxml.h; sourceTree = "<group>"; };
+		553522731384F34F00B47753 /* tinyxmlerror.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlerror.cpp; sourceTree = "<group>"; };
+		553522741384F34F00B47753 /* tinyxmlparser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
+		553522751384F34F00B47753 /* version.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
+		553522781384F34F00B47753 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		553522791384F34F00B47753 /* mktables.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mktables.c; sourceTree = "<group>"; };
+		5535227A1384F34F00B47753 /* mktables.spec */ = {isa = PBXFileReference; lastKnownFileType = text; path = mktables.spec; sourceTree = "<group>"; };
+		5535227B1384F34F00B47753 /* opcodes.lst */ = {isa = PBXFileReference; lastKnownFileType = text; path = opcodes.lst; sourceTree = "<group>"; };
+		5535227C1384F34F00B47753 /* Z80CPU.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Z80CPU.cpp; sourceTree = "<group>"; };
+		5535227D1384F34F00B47753 /* Z80CPU.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Z80CPU.h; sourceTree = "<group>"; };
+		553522AB1385427C00B47753 /* Nanowasp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nanowasp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		553522CA1385436600B47753 /* Nanowasp-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Nanowasp-Info.plist"; sourceTree = "<group>"; };
+		553522F31385F31700B47753 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = SDKs/MacOSX10.6.sdk/System/Library/Frameworks/OpenGL.framework; sourceTree = DEVELOPER_DIR; };
+		5589335E1386334300716A25 /* libdsk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libdsk.a; path = Libs/libdsk.a; sourceTree = "<group>"; };
+		558933601386351100716A25 /* Microbee.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Microbee.xml; sourceTree = "<group>"; };
+		55EA558A1388E14D004A1EA4 /* Data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Data; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		553522A81385427C00B47753 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				553522F41385F31700B47753 /* OpenGL.framework in Frameworks */,
+				5589335F1386334300716A25 /* libdsk.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		553522301384F28200B47753 = {
+			isa = PBXGroup;
+			children = (
+				55EA55891388E11F004A1EA4 /* Resources */,
+				553522F51385F32400B47753 /* Frameworks */,
+				553522CD1385437300B47753 /* Supporting Files */,
+				553522451384F34F00B47753 /* Source */,
+				553522AC1385427C00B47753 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		553522451384F34F00B47753 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				553522461384F34F00B47753 /* CRTC.cpp */,
+				553522471384F34F00B47753 /* CRTC.h */,
+				553522481384F34F00B47753 /* CRTCMemory.cpp */,
+				553522491384F34F00B47753 /* CRTCMemory.h */,
+				5535224A1384F34F00B47753 /* Device.h */,
+				5535224B1384F34F00B47753 /* DeviceFactory.cpp */,
+				5535224C1384F34F00B47753 /* DeviceFactory.h */,
+				5535224D1384F34F00B47753 /* Disk.cpp */,
+				5535224E1384F34F00B47753 /* Disk.h */,
+				5535224F1384F34F00B47753 /* Drives.cpp */,
+				553522501384F34F00B47753 /* Drives.h */,
+				553522511384F34F00B47753 /* Exceptions.h */,
+				553522521384F34F00B47753 /* FDC.cpp */,
+				553522531384F34F00B47753 /* FDC.h */,
+				553522541384F34F00B47753 /* Forms.cpp */,
+				553522551384F34F00B47753 /* Forms.h */,
+				553522561384F34F00B47753 /* Keyboard.cpp */,
+				553522571384F34F00B47753 /* Keyboard.h */,
+				553522581384F34F00B47753 /* LatchROM.cpp */,
+				553522591384F34F00B47753 /* LatchROM.h */,
+				5535225A1384F34F00B47753 /* MainWindow.cpp */,
+				5535225B1384F34F00B47753 /* MainWindow.h */,
+				5535225C1384F34F00B47753 /* MemMapper.cpp */,
+				5535225D1384F34F00B47753 /* MemMapper.h */,
+				5535225E1384F34F00B47753 /* MemoryDevice.h */,
+				5535225F1384F34F00B47753 /* Microbee.cpp */,
+				553522601384F34F00B47753 /* Microbee.h */,
+				553522611384F34F00B47753 /* Nanowasp.cpp */,
+				553522621384F34F00B47753 /* Nanowasp.h */,
+				553522631384F34F00B47753 /* NullMemory.h */,
+				553522641384F34F00B47753 /* NullPort.h */,
+				553522651384F34F00B47753 /* PortDevice.h */,
+				553522661384F34F00B47753 /* RAM.cpp */,
+				553522671384F34F00B47753 /* RAM.h */,
+				553522681384F34F00B47753 /* ROM.cpp */,
+				553522691384F34F00B47753 /* ROM.h */,
+				5535226A1384F34F00B47753 /* stdafx.cpp */,
+				5535226B1384F34F00B47753 /* stdafx.h */,
+				5535226C1384F34F00B47753 /* Terminal.cpp */,
+				5535226D1384F34F00B47753 /* Terminal.h */,
+				5535226E1384F34F00B47753 /* tinyxml */,
+				553522751384F34F00B47753 /* version.h */,
+				553522761384F34F00B47753 /* Z80 */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		5535226E1384F34F00B47753 /* tinyxml */ = {
+			isa = PBXGroup;
+			children = (
+				5535226F1384F34F00B47753 /* tinystr.cpp */,
+				553522701384F34F00B47753 /* tinystr.h */,
+				553522711384F34F00B47753 /* tinyxml.cpp */,
+				553522721384F34F00B47753 /* tinyxml.h */,
+				553522731384F34F00B47753 /* tinyxmlerror.cpp */,
+				553522741384F34F00B47753 /* tinyxmlparser.cpp */,
+			);
+			path = tinyxml;
+			sourceTree = "<group>";
+		};
+		553522761384F34F00B47753 /* Z80 */ = {
+			isa = PBXGroup;
+			children = (
+				553522771384F34F00B47753 /* codegen */,
+				5535227C1384F34F00B47753 /* Z80CPU.cpp */,
+				5535227D1384F34F00B47753 /* Z80CPU.h */,
+			);
+			path = Z80;
+			sourceTree = "<group>";
+		};
+		553522771384F34F00B47753 /* codegen */ = {
+			isa = PBXGroup;
+			children = (
+				553522781384F34F00B47753 /* Makefile */,
+				553522791384F34F00B47753 /* mktables.c */,
+				5535227A1384F34F00B47753 /* mktables.spec */,
+				5535227B1384F34F00B47753 /* opcodes.lst */,
+			);
+			path = codegen;
+			sourceTree = "<group>";
+		};
+		553522AC1385427C00B47753 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				553522AB1385427C00B47753 /* Nanowasp.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		553522CD1385437300B47753 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				553522CA1385436600B47753 /* Nanowasp-Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		553522F51385F32400B47753 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5589335E1386334300716A25 /* libdsk.a */,
+				553522F31385F31700B47753 /* OpenGL.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		55EA55891388E11F004A1EA4 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				55EA558A1388E14D004A1EA4 /* Data */,
+				558933601386351100716A25 /* Microbee.xml */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		553522AA1385427C00B47753 /* Nanowasp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 553522C71385427D00B47753 /* Build configuration list for PBXNativeTarget "Nanowasp" */;
+			buildPhases = (
+				553522A71385427C00B47753 /* Sources */,
+				553522A81385427C00B47753 /* Frameworks */,
+				553522A91385427C00B47753 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Nanowasp;
+			productName = Nanowasp;
+			productReference = 553522AB1385427C00B47753 /* Nanowasp.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		553522321384F28200B47753 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 553522351384F28200B47753 /* Build configuration list for PBXProject "Nanowasp" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 553522301384F28200B47753;
+			productRefGroup = 553522AC1385427C00B47753 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				553522AA1385427C00B47753 /* Nanowasp */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		553522A91385427C00B47753 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				558933611386351200716A25 /* Microbee.xml in Resources */,
+				55EA558B1388E14D004A1EA4 /* Data in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		553522A71385427C00B47753 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				553522DB1385469A00B47753 /* CRTC.cpp in Sources */,
+				553522DC1385469A00B47753 /* CRTCMemory.cpp in Sources */,
+				553522DD1385469A00B47753 /* DeviceFactory.cpp in Sources */,
+				553522DE1385469A00B47753 /* Disk.cpp in Sources */,
+				553522DF1385469A00B47753 /* Drives.cpp in Sources */,
+				553522E01385469A00B47753 /* FDC.cpp in Sources */,
+				553522E11385469A00B47753 /* Forms.cpp in Sources */,
+				553522E21385469A00B47753 /* Keyboard.cpp in Sources */,
+				553522E31385469A00B47753 /* LatchROM.cpp in Sources */,
+				553522E41385469A00B47753 /* MainWindow.cpp in Sources */,
+				553522E51385469A00B47753 /* MemMapper.cpp in Sources */,
+				553522E61385469A00B47753 /* Microbee.cpp in Sources */,
+				553522E71385469A00B47753 /* Nanowasp.cpp in Sources */,
+				553522E81385469A00B47753 /* RAM.cpp in Sources */,
+				553522E91385469A00B47753 /* ROM.cpp in Sources */,
+				553522EA1385469A00B47753 /* stdafx.cpp in Sources */,
+				553522EB1385469A00B47753 /* Terminal.cpp in Sources */,
+				553522EC1385469A00B47753 /* tinystr.cpp in Sources */,
+				553522ED1385469A00B47753 /* tinyxml.cpp in Sources */,
+				553522EE1385469A00B47753 /* tinyxmlerror.cpp in Sources */,
+				553522EF1385469A00B47753 /* tinyxmlparser.cpp in Sources */,
+				553522F01385469A00B47753 /* Z80CPU.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		553522371384F28200B47753 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		553522381384F28200B47753 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		553522C81385427D00B47753 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = Libs/include;
+				INFOPLIST_FILE = "Nanowasp-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Libs\"",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CPLUSPLUSFLAGS = (
+					"-I/Users/dave/Source/External/wxWidgets/osx-build/lib/wx/include/osx_cocoa-unicode-2.9",
+					"-I/Users/dave/Source/External/wxWidgets/include",
+					"-D_FILE_OFFSET_BITS=64",
+					"-DWXUSINGDLL",
+					"-D__WXMAC__",
+					"-D__WXOSX__",
+					"-D__WXOSX_COCOA__",
+				);
+				OTHER_LDFLAGS = (
+					"-L/Users/dave/Source/External/wxWidgets/osx-build/lib",
+					"-framework",
+					IOKit,
+					"-framework",
+					Carbon,
+					"-framework",
+					Cocoa,
+					"-framework",
+					AudioToolbox,
+					"-framework",
+					System,
+					"-framework",
+					OpenGL,
+					"-framework",
+					QuickTime,
+					"-lwx_osx_cocoau_xrc-2.9",
+					"-lwx_osx_cocoau_html-2.9",
+					"-lwx_osx_cocoau_qa-2.9",
+					"-lwx_osx_cocoau_adv-2.9",
+					"-lwx_osx_cocoau_core-2.9",
+					"-lwx_baseu_xml-2.9",
+					"-lwx_baseu_net-2.9",
+					"-lwx_baseu-2.9",
+					"-lwx_osx_cocoau_gl-2.9",
+					"-lbz2",
+					"-lz",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		553522C91385427D00B47753 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = Libs/include;
+				INFOPLIST_FILE = "Nanowasp-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Libs\"",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CPLUSPLUSFLAGS = (
+					"-I/Users/dave/Source/External/wxWidgets/osx-build/lib/wx/include/osx_cocoa-unicode-2.9",
+					"-I/Users/dave/Source/External/wxWidgets/include",
+					"-D_FILE_OFFSET_BITS=64",
+					"-DWXUSINGDLL",
+					"-D__WXMAC__",
+					"-D__WXOSX__",
+					"-D__WXOSX_COCOA__",
+				);
+				OTHER_LDFLAGS = (
+					"-L/Users/dave/Source/External/wxWidgets/osx-build/lib",
+					"-framework",
+					IOKit,
+					"-framework",
+					Carbon,
+					"-framework",
+					Cocoa,
+					"-framework",
+					AudioToolbox,
+					"-framework",
+					System,
+					"-framework",
+					OpenGL,
+					"-framework",
+					QuickTime,
+					"-lwx_osx_cocoau_xrc-2.9",
+					"-lwx_osx_cocoau_html-2.9",
+					"-lwx_osx_cocoau_qa-2.9",
+					"-lwx_osx_cocoau_adv-2.9",
+					"-lwx_osx_cocoau_core-2.9",
+					"-lwx_baseu_xml-2.9",
+					"-lwx_baseu_net-2.9",
+					"-lwx_baseu-2.9",
+					"-lwx_osx_cocoau_gl-2.9",
+					"-lbz2",
+					"-lz",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		553522351384F28200B47753 /* Build configuration list for PBXProject "Nanowasp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				553522371384F28200B47753 /* Debug */,
+				553522381384F28200B47753 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		553522C71385427D00B47753 /* Build configuration list for PBXNativeTarget "Nanowasp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				553522C81385427D00B47753 /* Debug */,
+				553522C91385427D00B47753 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 553522321384F28200B47753 /* Project object */;
+}

@@ -662,8 +662,8 @@ void outputTable(Z80OpcodeTable *table, FILE *file)
 		if (opc->format)
 			sprintf(fmt, "\"%s\"", opc->format);
 
-		fprintf(file, "\t{ %c%-20s, %-9s, %-4i, %-20s, %s%s }%s\n",
-                                                (opc->func ? '&' : ' '),
+		fprintf(file, "\t{ %s%-20s, %-9s, %-4i, %-20s, %s%s }%s\n",
+                                                (opc->func ? "&Z80CPU::" : ""),
 												(opc->func ? opc->func : "NULL"),
 												OpTypeName[opc->operand_type],
                                                 opc->cycles,

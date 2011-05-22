@@ -20,6 +20,7 @@
 
 #include "stdafx.h"
 #include "MainWindow.h"
+#include <wx/stdpaths.h>
 
 #include "Forms.h"
 
@@ -54,7 +55,7 @@ MainWindow::MainWindow() :
     mbee(NULL)
 {
     // Icons
-    SetIcon(wxIcon("NanowaspIcon", wxBITMAP_TYPE_ICO_RESOURCE));
+  //  SetIcon(wxIcon("NanowaspIcon", wxBITMAP_TYPE_ICO_RESOURCE));
 
     // Menus
     wxMenuBar* menubar = new wxMenuBar();
@@ -106,7 +107,13 @@ MainWindow::MainWindow() :
     // call is also made from here (as opposed to Nanowasp::OnInit()).
     try
     {
-        mbee = new Microbee(*term, "Microbee.xml");
+#ifdef __WXOSX__
+        wxString xmlFile = wxStandardPaths::Get().GetResourcesDir() + "/Microbee.xml";
+#else
+        wxString xmlFile("Microbee.xml");
+#endif
+        
+        mbee = new Microbee(*term, xmlFile.c_str());
         mbee->Create();
         mbee->Run();
     }

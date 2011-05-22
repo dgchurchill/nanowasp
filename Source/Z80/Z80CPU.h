@@ -256,7 +256,7 @@ private:
     	
 	    int operand_type;
         int cycles;
-	    char *format;	
+	    const char *format;	
     	
         Z80OpcodeTable *table;
     };

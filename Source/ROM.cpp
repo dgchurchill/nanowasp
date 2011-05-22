@@ -25,7 +25,8 @@
 
 
 /*! \p config_ must specify size and filename attributes on the <device> */
-ROM::ROM(Microbee &, const TiXmlElement &config_)
+ROM::ROM(Microbee &mbee_, const TiXmlElement &config_) :
+    mbee(mbee_)
 {
     int s;
 
@@ -52,8 +53,10 @@ ROM::ROM(Microbee &, const TiXmlElement &config_)
 }
 
 
-ROM::ROM(unsigned int size_) :
-    MemoryDevice(size_), memory(size_, 0)
+ROM::ROM(Microbee &mbee_, unsigned int size_) :
+    MemoryDevice(size_),
+    memory(size_, 0),
+    mbee(mbee_)
 {
 }
 
@@ -73,8 +76,8 @@ void ROM::LoadROM(const char *filename)
         memory.resize(size, 0);
         return;
     }
-
-    wxFile rom_file(filename);
+    
+    wxFile rom_file(mbee.GetConfigFileName().GetPath(wxPATH_GET_SEPARATOR) + filename);
 
     if (!rom_file.IsOpened())
         throw FileNotFound(filename);

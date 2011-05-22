@@ -29,11 +29,19 @@
 #endif						
 
 #include <stdio.h>
-#include <tchar.h>
 
 #include <wx/wx.h>
 
 #include "Exceptions.h"
+
+
+#ifndef UNREFERENCED_PARAMETER
+#    ifdef __WXOSX__
+#        define UNREFERENCED_PARAMETER(P)
+#    else
+#        define UNREFERENCED_PARAMETER(P) (P)
+#    endif
+#endif
 
 
 // TODO: Move these to a better place?
