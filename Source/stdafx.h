@@ -58,6 +58,7 @@ enum
     ID_LoadDiskA,
     ID_LoadDiskB,
     ID_CreateDisk,
+    ID_SaveState,
 };
 
 

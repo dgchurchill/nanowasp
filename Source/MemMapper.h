@@ -48,6 +48,8 @@ public:
 
     virtual void LateInit();
 
+    virtual void SaveState(BinaryWriter&);
+    virtual void RestoreState(BinaryReader&);
 
     virtual void Reset();
 
@@ -70,6 +72,7 @@ private:
     ROM *rom3;   //!< Connection to ROM 3
     CRTCMemory *crtcmem;  //!< Connection to CRTCMemory
 
+    byte lastValue;  //!< Holds the last value written to the mem mapper so that we can save/restore state.
 
     static const byte cBank = 0x07;
     static const byte cROMDisable = 0x04;

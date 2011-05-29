@@ -96,3 +96,14 @@ void RAM::LoadRAM(const char *filename)
     else
         ram_file.Read(memory, len);
 }
+
+void RAM::SaveState(BinaryWriter& writer)
+{
+    writer.WriteBuffer(this->memory, this->size);
+}
+
+void RAM::RestoreState(BinaryReader& reader)
+{
+    reader.ReadBuffer(this->memory, this->size);
+}
+

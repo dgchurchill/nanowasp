@@ -110,6 +110,8 @@ void MemMapper::PortWrite(word addr, byte val)
 {
     UNREFERENCED_PARAMETER(addr);
 
+    this->lastValue = val;
+    
     // Lower 32k
     switch (val & cBank)
     {
@@ -166,4 +168,15 @@ byte MemMapper::PortRead(word addr)
     UNREFERENCED_PARAMETER(addr);
 
     return 0;  // The memory mapper setting is not readable
+}
+
+void MemMapper::SaveState(BinaryWriter& writer)
+{
+    writer.WriteByte(this->lastValue);
+}
+
+void MemMapper::RestoreState(BinaryReader& reader)
+{
+    this->lastValue = reader.ReadByte();
+    this->PortWrite(0, this->lastValue);
 }

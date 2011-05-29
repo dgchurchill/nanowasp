@@ -37,7 +37,7 @@ class CRTC;
  *    - Character ROM, 4kB (bitmap data for built-in characters)
  *    - PCG RAM, 2kB (Programmable Character Graphics RAM: bitmap data for user characters)
  *
- *  The three memories are implemented as a single MemoryDevice because of they effectively
+ *  The three memories are implemented as a single MemoryDevice because they effectively
  *  form a single system compenent.  This allows functions such as GetCharBitmap() to be
  *  defined sensibly within the class.  The graphics memory is also treated as a single
  *  unit by the Microbee's memory mapper.
@@ -73,6 +73,8 @@ public:
     //! Returns a pointer to the character bitmap referenced by the <em>video RAM</em> byte at \p addr
     const unsigned char *GetCharBitmap(word addr, word scans_per_row);
 
+    virtual void SaveState(BinaryWriter&);
+    virtual void RestoreState(BinaryReader&);
 
     static const word cBitmapSize = 16;  //!< Character bitmap length in bytes
 

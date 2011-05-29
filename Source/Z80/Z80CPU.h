@@ -151,6 +151,8 @@ public:
     /** Generates a non-maskable interrupt. */
     void Z80NMI ();
 
+    virtual void SaveState(BinaryWriter& writer);
+    virtual void RestoreState(BinaryReader& reader);
 
 private:
     Microbee &mbee;
@@ -161,6 +163,8 @@ private:
 
     int cycles;  //!< cycles left to run (signed in case the previous execution overran)
 
+    void SaveRegs(BinaryWriter& writer, const Z80Regs& regs);
+    void RestoreRegs(BinaryReader& reader, Z80Regs& regs);
 
     // TODO: Change union use to dynamic_casts, or get rid of it all together (separate RegPort / RegMem)
     class HandlerEntry

@@ -43,6 +43,9 @@ public:
     //! Shuts down the emulator gracefully
     void OnClose(wxCloseEvent& evt);
 
+    //! Saves the emulator state
+    void OnSaveState(wxCommandEvent& evt);
+    
     //! Loads a disk into the drive
     void OnLoadDiskA(wxCommandEvent& evt);
     void OnLoadDiskB(wxCommandEvent& evt);

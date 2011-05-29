@@ -22,6 +22,8 @@
 
 #include "tinyxml/tinyxml.h"
 #include "Microbee.h"
+#include "utils/BinaryReader.h"
+#include "utils/BinaryWriter.h"
 
 
 /*! \brief Base class for all emulated devices
@@ -96,7 +98,14 @@ public:
      *  time that has been emulated so far in the current call.  Devices which haven't reimplemented
      *  Execute() don't need to reimplement this function either.
      */
-    virtual Microbee::time_t GetTime() { return 0; };
+    virtual Microbee::time_t GetTime() { return 0; }
+    
+    /*! \brief Saves the current state of the device to the given writer.
+     */
+    virtual void SaveState(BinaryWriter&) { }
+    /*! \brief Restores the state of the device from the given reader.
+     */
+    virtual void RestoreState(BinaryReader&) { }
 };
 
 

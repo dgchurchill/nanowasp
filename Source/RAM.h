@@ -43,6 +43,8 @@ public:
 
     byte *memory;  //!< The contents of the RAM, plain array for speed
 
+    virtual void SaveState(BinaryWriter&);
+    virtual void RestoreState(BinaryReader&);
 
 private:
     TiXmlElement config;

@@ -353,3 +353,58 @@ void CRTC::CalcVBlank()
     if (frame_time == 0)
         frame_time = 1;  // Ensure we don't divide by zero later
 }
+
+void CRTC::SaveState(BinaryWriter& writer)
+{
+    writer.WriteByte(this->reg);
+    
+    writer.WriteWord(this->mem_addr);
+    
+    writer.WriteWord(this->disp_start);
+    
+    writer.WriteWord(this->htot);
+    writer.WriteWord(this->hdisp);
+    writer.WriteWord(this->vtot);
+    writer.WriteWord(this->vtot_adj);
+    writer.WriteWord(this->vdisp);
+    writer.WriteWord(this->scans_per_row);
+    
+    writer.WriteWord(this->cur_start);
+    writer.WriteWord(this->cur_end);
+    writer.WriteWord(this->cur_mode);
+    writer.WriteWord(this->cur_pos);
+    writer.WriteBool(this->cursor_on);
+    writer.WriteWord(this->blink_rate);
+    
+    writer.WriteWord(this->lpen);
+    writer.WriteBool(this->lpen_valid);
+}
+
+void CRTC::RestoreState(BinaryReader& reader)
+{
+    this->reg = reader.ReadByte();
+    
+    this->mem_addr = reader.ReadWord();
+    
+    this->disp_start = reader.ReadWord();
+    
+    this->htot = reader.ReadWord();
+    this->hdisp = reader.ReadWord();
+    this->vtot = reader.ReadWord();
+    this->vtot_adj = reader.ReadWord();
+    this->vdisp = reader.ReadWord();
+    this->scans_per_row = reader.ReadWord();
+    
+    this->cur_start = reader.ReadWord();
+    this->cur_end = reader.ReadWord();
+    this->cur_mode = reader.ReadWord();
+    this->cur_pos = reader.ReadWord();
+    this->cursor_on = reader.ReadBool();
+    this->blink_rate = reader.ReadWord();
+    
+    this->lpen = reader.ReadWord();
+    this->lpen_valid = reader.ReadBool();
+    
+    this->CalcVBlank();
+}
+

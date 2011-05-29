@@ -836,3 +836,50 @@ Microbee::time_t Z80CPU::GetTime()
 {
     return emu_time - (Microbee::time_t)cycles * 1000000 / freq;  // We've got 'cycles' left to run, so back in time we go
 }
+
+void Z80CPU::SaveState(BinaryWriter& writer)
+{
+    this->SaveRegs(writer, this->R1);
+    this->SaveRegs(writer, this->R2);
+    writer.WriteWord(this->PC);
+    writer.WriteByte(this->R);
+    writer.WriteByte(this->I);
+    writer.WriteByte(this->IFF1);
+    writer.WriteByte(this->IFF2);
+    writer.WriteByte(this->IM);
+}
+
+void Z80CPU::RestoreState(BinaryReader& reader)
+{
+    this->RestoreRegs(reader, this->R1);
+    this->RestoreRegs(reader, this->R2);
+    this->PC = reader.ReadWord();
+    this->R = reader.ReadByte();
+    this->I = reader.ReadByte();
+    this->IFF1 = reader.ReadByte();
+    this->IFF2 = reader.ReadByte();
+    this->IM = reader.ReadByte();
+}
+
+void Z80CPU::SaveRegs(BinaryWriter& writer, const Z80Regs& regs)
+{
+    writer.WriteWord(regs.wr.AF);
+    writer.WriteWord(regs.wr.BC);
+    writer.WriteWord(regs.wr.DE);
+    writer.WriteWord(regs.wr.HL);
+    writer.WriteWord(regs.wr.IX);
+    writer.WriteWord(regs.wr.IY);
+    writer.WriteWord(regs.wr.SP);
+}
+
+void Z80CPU::RestoreRegs(BinaryReader& reader, Z80Regs& regs)
+{
+    regs.wr.AF = reader.ReadWord();
+    regs.wr.BC = reader.ReadWord();
+    regs.wr.DE = reader.ReadWord();
+    regs.wr.HL = reader.ReadWord();
+    regs.wr.IX = reader.ReadWord();
+    regs.wr.IY = reader.ReadWord();
+    regs.wr.SP = reader.ReadWord();
+}
+

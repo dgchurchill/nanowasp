@@ -30,6 +30,10 @@
 #include <GL/glu.h>
 #endif
 
+#include "base64/base64.h"
+#include "utils/BinaryWriter.h"
+#include "utils/BinaryReader.h"
+
 #include "Terminal.h"
 #include "Device.h"
 #include "DeviceFactory.h"
@@ -44,19 +48,19 @@ Microbee::Microbee(Terminal &scr_, const char *config_file) :
     scr(scr_),
     current_dev(NULL),
     emu_time(0),
-    configFileName(config_file)
+    configFileName(config_file),
+    configuration(config_file)
 {
     pause_mutex.Lock();
     
     configFileName.MakeAbsolute();
 
-    TiXmlDocument config(config_file);
-    if (!config.LoadFile())
+    if (!configuration.LoadFile())
         throw ConfigError(NULL, std::string("Unable to load configuration file ") + config_file);
 
-    TiXmlElement *mbee_tag = config.FirstChildElement("microbee");
+    TiXmlElement *mbee_tag = configuration.FirstChildElement("microbee");
     if (mbee_tag == NULL)
-        throw ConfigError(&config, "Config is missing <microbee> element");
+        throw ConfigError(&configuration, "Config is missing <microbee> element");
 
 
     DeviceFactory dev_factory;
@@ -143,6 +147,38 @@ Microbee::Microbee(Terminal &scr_, const char *config_file) :
 
 
     Reset();
+    
+    // Restore any state that's present in the config
+    try
+    {
+        for (const TiXmlElement *el = mbee_tag->FirstChildElement("device"); el != NULL; el = el->NextSiblingElement("device"))
+        {
+            const TiXmlElement *state_el = el->FirstChildElement("State");
+            if (state_el == NULL)
+            {
+                continue;
+            }
+            
+            const char* encoded_state = state_el->GetText();
+            if (encoded_state == NULL)
+            {
+                continue;
+            }
+            
+            std::string state = ::base64_decode(encoded_state);
+            std::istringstream stream(state, std::istringstream::in | std::istringstream::binary);
+            BinaryReader reader(stream);
+            
+            const char *id = el->Attribute("id");
+            Device* device = this->GetDevice<Device>(id);
+            
+            device->RestoreState(reader);
+        }
+    }
+    catch (std::exception& e)
+    {
+        return;
+    }
 }
 
 
@@ -240,6 +276,45 @@ void Microbee::ResumeEmulation()
     paused = false;
 }
 
+
+// MUST BE THREAD SAFE
+void Microbee::SaveState(const char *filename)
+{
+    this->PauseEmulation(); // Emulation will stay paused if an exception occurs.
+
+    TiXmlDocument stateXml(this->configuration);
+    
+    TiXmlElement *mbee_tag = stateXml.FirstChildElement("microbee");
+
+    for (TiXmlElement *el = mbee_tag->FirstChildElement("device"); el != NULL; el = el->NextSiblingElement("device"))
+    {
+        const char *id = el->Attribute("id");
+        Device* device = this->GetDevice<Device>(id);
+
+        std::ostringstream stream(std::ostringstream::out | std::ostringstream::binary);
+        BinaryWriter writer(stream);
+        device->SaveState(writer);
+        std::string state = stream.str();
+        std::string encoded = ::base64_encode((unsigned char *)state.data(), state.length());
+        
+        // Remove any existing <State> elements
+        while (TiXmlElement *old_state = el->FirstChildElement("State"))
+        {
+            el->RemoveChild(old_state);
+        }
+        
+        TiXmlElement stateElement("State");
+        stateElement.InsertEndChild(TiXmlText(encoded));
+        el->InsertEndChild(stateElement);
+    }
+    
+    if (!stateXml.SaveFile(filename))
+    {
+        throw std::runtime_error("Failed to save state");
+    }
+    
+    this->ResumeEmulation(); 
+}
 
 // MUST BE THREAD SAFE
 // TODO: Generalise as a Device member function which registers its own menu / panel

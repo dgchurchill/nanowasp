@@ -46,7 +46,9 @@ public:
     ~CRTC();
 
     virtual void LateInit();
-
+    
+    virtual void SaveState(BinaryWriter& writer);
+    virtual void RestoreState(BinaryReader& reader);
 
     virtual void Reset();
 

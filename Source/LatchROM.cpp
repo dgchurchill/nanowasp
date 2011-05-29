@@ -42,3 +42,13 @@ byte LatchROM::PortRead(word addr)
 
     return 0;  // LatchROM flip-flip can't be read
 }
+
+void LatchROM::SaveState(BinaryWriter &writer)
+{
+    writer.WriteBool(this->latch);
+}
+
+void LatchROM::RestoreState(BinaryReader& reader)
+{
+    this->latch = reader.ReadBool();
+}

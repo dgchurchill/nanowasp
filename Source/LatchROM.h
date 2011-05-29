@@ -40,6 +40,8 @@ public:
     virtual void PortWrite(word addr, byte val);
     virtual byte PortRead(word addr);
 
+    virtual void SaveState(BinaryWriter&);
+    virtual void RestoreState(BinaryReader&);
 
     //! Returns the current setting of the flip-flop
     bool GetLatch() const { return latch; }

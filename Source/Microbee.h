@@ -69,6 +69,9 @@ public:
     //! Resumes the emulation (returns immediately).  Thread safe.
     void ResumeEmulation();
 
+    //! Seralizes the current emulation state into the specfied file.  Thread safe.
+    void SaveState(const char *filename);
+    
     //! Loads a disk in the specified drive.  TODO: Remove this and generalise Device specific functions
     void LoadDisk(unsigned int drive, const char *name);
 
@@ -127,7 +130,9 @@ private:
 
     Microbee::time_t emu_time;  //!< Current emulation time (= 0 at reset)
 
-    wxFileName configFileName;
+    wxFileName configFileName;  //!< The absolute filename of the configuration file
+    
+    TiXmlDocument configuration;  //!< The XML configuration of the system
 
     // Private copy constuctor and assigment operator to prevent copies
     Microbee(const Microbee &);

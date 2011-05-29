@@ -34,6 +34,7 @@ BEGIN_EVENT_TABLE(MainWindow, wxFrame)
   EVT_MENU(wxID_EXIT, MainWindow::OnExit)
   EVT_MENU(wxID_ABOUT, MainWindow::OnAbout)
 
+  EVT_MENU(ID_SaveState, MainWindow::OnSaveState)
   EVT_MENU(ID_LoadDiskA, MainWindow::OnLoadDiskA)
   EVT_MENU(ID_LoadDiskB, MainWindow::OnLoadDiskB)
   EVT_MENU(ID_Pause, MainWindow::OnPause)
@@ -60,13 +61,19 @@ MainWindow::MainWindow() :
     // Menus
     wxMenuBar* menubar = new wxMenuBar();
 
+    wxMenu* menu;
+
+#ifndef __WXOSX__
     // File menu
-    wxMenu* menu = new wxMenu();
+    menu = new wxMenu();
     menu->Append(wxID_EXIT, _T("E&xit"));
     menubar->Append(menu, _T("&File"));
+#endif
 
     // Microbee menu
     menu = new wxMenu();
+    menu->Append(ID_SaveState, _T("&Save State..."), "Saves the current emulator state");
+    menu->AppendSeparator();
     menu->Append(ID_LoadDiskA, _T("Load Disk &A"), "Loads a disk image into drive A");
     menu->Append(ID_LoadDiskB, _T("Load Disk &B"), "Loads a disk image into drive B");
     menu->AppendSeparator();
@@ -127,8 +134,10 @@ MainWindow::MainWindow() :
 
 void MainWindow::Activate(wxActivateEvent &evt)
 {
+#ifndef __WXOSX__   // TODO: Check if this is even required on Windows anymore
     term->SetFocus();
     evt.Skip();
+#endif
 }
 
 
@@ -154,6 +163,16 @@ void MainWindow::OnClose(wxCloseEvent& evt)
     evt.Skip();
 }
 
+void MainWindow::OnSaveState(wxCommandEvent& WXUNUSED(evt))
+{
+    wxString filename = wxFileSelector("", wxGetCwd(), "", ".xml", 
+                                       "XML Files (*.xml)|*.xml", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+    
+    if (!filename.empty())
+    {
+        mbee->SaveState(filename.c_str());
+    }
+}
 
 void MainWindow::OnLoadDiskA(wxCommandEvent& WXUNUSED(evt))
 {

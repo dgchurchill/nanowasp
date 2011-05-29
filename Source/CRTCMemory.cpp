@@ -142,6 +142,17 @@ const unsigned char *CRTCMemory::GetCharBitmap(word addr, word scans_per_row)
                                 ((getBits(b, cIndexOfs, cIndexSize) + 1) * cBitmapSize - scans_per_row)];
 }
 
+void CRTCMemory::SaveState(BinaryWriter& writer)
+{
+    this->video_ram.SaveState(writer);
+    this->pcg_ram.SaveState(writer);
+}
+
+void CRTCMemory::RestoreState(BinaryReader& reader)
+{
+    this->video_ram.RestoreState(reader);
+    this->pcg_ram.RestoreState(reader);
+}
 
 word CRTCMemory::XlatAddress(word addr)
 {

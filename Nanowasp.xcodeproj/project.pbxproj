@@ -32,6 +32,9 @@
 		553522F41385F31700B47753 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 553522F31385F31700B47753 /* OpenGL.framework */; };
 		5589335F1386334300716A25 /* libdsk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5589335E1386334300716A25 /* libdsk.a */; };
 		558933611386351200716A25 /* Microbee.xml in Resources */ = {isa = PBXBuildFile; fileRef = 558933601386351100716A25 /* Microbee.xml */; };
+		55CFCF8A1390C2560045943C /* base64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55CFCF881390C2560045943C /* base64.cpp */; };
+		55DFCD80139213ED00556118 /* BinaryWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55DFCD7E139213ED00556118 /* BinaryWriter.cpp */; };
+		55DFCD83139213F900556118 /* BinaryReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55DFCD81139213F900556118 /* BinaryReader.cpp */; };
 		55EA558B1388E14D004A1EA4 /* Data in Resources */ = {isa = PBXBuildFile; fileRef = 55EA558A1388E14D004A1EA4 /* Data */; };
 /* End PBXBuildFile section */
 
@@ -94,6 +97,12 @@
 		553522F31385F31700B47753 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = SDKs/MacOSX10.6.sdk/System/Library/Frameworks/OpenGL.framework; sourceTree = DEVELOPER_DIR; };
 		5589335E1386334300716A25 /* libdsk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libdsk.a; path = Libs/libdsk.a; sourceTree = "<group>"; };
 		558933601386351100716A25 /* Microbee.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Microbee.xml; sourceTree = "<group>"; };
+		55CFCF881390C2560045943C /* base64.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = base64.cpp; sourceTree = "<group>"; };
+		55CFCF891390C2560045943C /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base64.h; sourceTree = "<group>"; };
+		55DFCD7E139213ED00556118 /* BinaryWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BinaryWriter.cpp; sourceTree = "<group>"; };
+		55DFCD7F139213ED00556118 /* BinaryWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BinaryWriter.h; sourceTree = "<group>"; };
+		55DFCD81139213F900556118 /* BinaryReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BinaryReader.cpp; sourceTree = "<group>"; };
+		55DFCD82139213F900556118 /* BinaryReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BinaryReader.h; sourceTree = "<group>"; };
 		55EA558A1388E14D004A1EA4 /* Data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Data; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -124,6 +133,8 @@
 		553522451384F34F00B47753 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				55DFCD7C139213AB00556118 /* utils */,
+				55CFCF861390C2050045943C /* base64 */,
 				553522461384F34F00B47753 /* CRTC.cpp */,
 				553522471384F34F00B47753 /* CRTC.h */,
 				553522481384F34F00B47753 /* CRTCMemory.cpp */,
@@ -230,6 +241,26 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		55CFCF861390C2050045943C /* base64 */ = {
+			isa = PBXGroup;
+			children = (
+				55CFCF881390C2560045943C /* base64.cpp */,
+				55CFCF891390C2560045943C /* base64.h */,
+			);
+			path = base64;
+			sourceTree = "<group>";
+		};
+		55DFCD7C139213AB00556118 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				55DFCD7E139213ED00556118 /* BinaryWriter.cpp */,
+				55DFCD7F139213ED00556118 /* BinaryWriter.h */,
+				55DFCD81139213F900556118 /* BinaryReader.cpp */,
+				55DFCD82139213F900556118 /* BinaryReader.h */,
+			);
+			path = utils;
+			sourceTree = "<group>";
+		};
 		55EA55891388E11F004A1EA4 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -320,6 +351,9 @@
 				553522EE1385469A00B47753 /* tinyxmlerror.cpp in Sources */,
 				553522EF1385469A00B47753 /* tinyxmlparser.cpp in Sources */,
 				553522F01385469A00B47753 /* Z80CPU.cpp in Sources */,
+				55CFCF8A1390C2560045943C /* base64.cpp in Sources */,
+				55DFCD80139213ED00556118 /* BinaryWriter.cpp in Sources */,
+				55DFCD83139213F900556118 /* BinaryReader.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
