@@ -91,9 +91,10 @@ private:
     ROM char_rom;  //!< The character ROM
 
     //! Converts addresses so that bitmap data is stored appropriate for OpenGL
-    word XlatAddress(word addr);
+    static word XlatAddress(word addr);
 
-
+    static void ReorderBitmaps(std::vector<byte>& memory);
+    
     static const word cGraphicsMemSize = 4096;
     static const word cVideoRAMSize = 2048;
     static const word cPCGRAMSize = 2048;

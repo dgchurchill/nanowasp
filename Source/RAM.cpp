@@ -40,28 +40,21 @@ RAM::RAM(Microbee &, const TiXmlElement &config_) :
 
     size = s;
 
-    memory = new byte[size];
+    memory.resize(size);
 }
 
 
 RAM::RAM(unsigned int size_) : 
     MemoryDevice(size_),
+    memory(size),
     config("device")
 {
-    memory = new byte[size];
-}
-
-
-
-RAM::~RAM()
-{
-    delete[] memory;
 }
 
 
 void RAM::Reset()
 {
-    memset(memory, 0, size);
+    memory.assign(size, 0);
 
     const char *file;
     if ((file = config.Attribute("filename")) != NULL)
@@ -92,18 +85,18 @@ void RAM::LoadRAM(const char *filename)
 
     wxFileOffset len = ram_file.Length();
     if (size < len)
-        ram_file.Read(memory, size);
+        ram_file.Read(&memory[0], size);
     else
-        ram_file.Read(memory, len);
+        ram_file.Read(&memory[0], len);
 }
 
 void RAM::SaveState(BinaryWriter& writer)
 {
-    writer.WriteBuffer(this->memory, this->size);
+    writer.WriteBuffer(&this->memory[0], this->size);
 }
 
 void RAM::RestoreState(BinaryReader& reader)
 {
-    reader.ReadBuffer(this->memory, this->size);
+    reader.ReadBuffer(&this->memory[0], this->size);
 }
 

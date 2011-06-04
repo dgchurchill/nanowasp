@@ -56,16 +56,23 @@ CRTCMemory::CRTCMemory(Microbee &mbee_, const TiXmlElement &config_) :
         throw ConfigError(&config_, std::string("Unable to open Character ROM file \"") + file + "\"");
     }
 
-    // Reorder char rom bytes so they represent OpenGL bitmaps
-    for (int i = 0; i < cCharROMSize / cBitmapSize; ++i)
-        for (int j = 0; j < cBitmapSize / 2; ++j)
-        {
-            byte tmp = char_rom.memory[i * cBitmapSize+j];
-            char_rom.memory[i * cBitmapSize + j] = char_rom.memory[XlatAddress(i * cBitmapSize + j)];
-            char_rom.memory[XlatAddress(i * cBitmapSize+j)] = tmp;
-        }
+    CRTCMemory::ReorderBitmaps(char_rom.memory);
 }
 
+/*! Reorder character bitmaps so they represent OpenGL bitmaps
+ */
+void CRTCMemory::ReorderBitmaps(std::vector<byte>& memory)
+{
+    for (int i = 0; i < memory.size() / cBitmapSize; ++i)
+    {
+        for (int j = 0; j < cBitmapSize / 2; ++j)
+        {
+            byte tmp = memory[i * cBitmapSize + j];
+            memory[i * cBitmapSize + j] = memory[XlatAddress(i * cBitmapSize + j)];
+            memory[XlatAddress(i * cBitmapSize + j)] = tmp;
+        }
+    }
+}
 
 void CRTCMemory::LateInit()
 {
@@ -145,7 +152,10 @@ const unsigned char *CRTCMemory::GetCharBitmap(word addr, word scans_per_row)
 void CRTCMemory::SaveState(BinaryWriter& writer)
 {
     this->video_ram.SaveState(writer);
+    
+    CRTCMemory::ReorderBitmaps(this->pcg_ram.memory);  // Make sure the PCG RAM is saved in the read order, not the munged order.
     this->pcg_ram.SaveState(writer);
+    CRTCMemory::ReorderBitmaps(this->pcg_ram.memory);
 }
 
 void CRTCMemory::RestoreState(BinaryReader& reader)

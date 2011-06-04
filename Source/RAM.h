@@ -30,7 +30,6 @@ class RAM : public MemoryDevice
 public:
     //! Construct based on XML \p config_ (primarily used by DeviceFactory)
     RAM(Microbee &, const TiXmlElement &config_);
-    virtual ~RAM();
 
     //! Creates a new RAM device of \p size_ bytes, initialised to 0
     RAM(unsigned int size_);
@@ -41,7 +40,7 @@ public:
     virtual void Write(word addr, byte val) { memory[addr] = val; };
     virtual byte Read(word addr) { return memory[addr]; };
 
-    byte *memory;  //!< The contents of the RAM, plain array for speed
+    std::vector<byte> memory;  //!< The contents of the RAM, plain array for speed
 
     virtual void SaveState(BinaryWriter&);
     virtual void RestoreState(BinaryReader&);
