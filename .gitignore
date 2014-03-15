@@ -1,0 +1,32 @@
+
+# /
+/nanowasp.ncb
+/nanowasp.suo
+/*.user
+/Debug
+/Release
+/Data
+/build
+
+# /DiskImageTool/
+/DiskImageTool/Forms.h
+/DiskImageTool/Forms.cpp
+/DiskImageTool/*.user
+/DiskImageTool/Debug
+/DiskImageTool/Release
+
+# /Libs/
+/Libs/libdsk-1.1.12
+
+# /Nanowasp.xcodeproj/
+/Nanowasp.xcodeproj/xcuserdata
+
+# /Nanowasp.xcodeproj/project.xcworkspace/
+/Nanowasp.xcodeproj/project.xcworkspace/xcuserdata
+
+# /Source/Z80/codegen/
+/Source/Z80/codegen/mktables.exe
+/Source/Z80/codegen/opcodes_table.c
+/Source/Z80/codegen/opcodes_table_decl.h
+/Source/Z80/codegen/opcodes_impl.c
+/Source/Z80/codegen/opcodes_decl.h
